@@ -1,0 +1,23 @@
+---
+version: '2'
+services:
+  influxdb:
+    image: influxdb
+    container_name: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    volumes:
+      - $VOLUMEDIR/influxdb:/var/lib/influxdb"
+    restart:
+      always
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - $VOLUMEDIR/grafana:/var/lib/grafana"
+    restart:
+      always
