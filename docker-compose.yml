@@ -1,5 +1,5 @@
 ---
-version: '2'
+version: "2"
 services:
   influxdb:
     image: influxdb
@@ -9,8 +9,6 @@ services:
       - 8086:8086
     volumes:
       - $VOLUMEDIR/influxdb:/var/lib/influxdb"
-    restart:
-      always
   grafana:
     image: grafana/grafana
     container_name: grafana
@@ -19,5 +17,3 @@ services:
       - 3000:3000
     volumes:
       - $VOLUMEDIR/grafana:/var/lib/grafana"
-    restart:
-      always
