@@ -8,12 +8,55 @@ services:
     ports:
       - 8086:8086
     volumes:
-      - $VOLUMEDIR/influxdb:/var/lib/influxdb"
+      - $VOLUMEDIR/influxdb:/var/lib/influxdb
   grafana:
     image: grafana/grafana
     container_name: grafana
     restart: always
+    user: "0:0" # ¯\_(ツ)_/¯
     ports:
       - 3000:3000
     volumes:
-      - $VOLUMEDIR/grafana:/var/lib/grafana"
+      - $VOLUMEDIR/grafana:/var/lib/grafana
+  organizr:
+    image: organizrtools/organizr-v2
+    container_name: organizr
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - $VOLUMEDIR/organizr:/config
+  urbackup:
+    image: uroni/urbackup-server
+    container_name: urbackup
+    restart: always
+    volumes:
+      - $VOLUMEDIR/urbackup-db:/var/urbackup
+      - $VOLUMEDIR/urbackup-backups:/backups
+    network_mode: "host"
+  transmission:
+    image: linuxserver/transmission
+    container_name: transmission
+    restart: always
+    ports:
+      - 51413:51413/tcp
+      - 51413:51413/udp
+      - 9091:9091
+    volumes:
+      - $VOLUMEDIR/transmission:/config
+      - /media/pit/shares/torrents/watch:/watch
+      - /media/pit/shares/torrents/downloads:/downloads
+  sync:
+    image: resilio/sync
+    container_name: sync
+    restart: always
+    ports:
+      - 55555
+    volumes:
+      - $VOLUMEDIR/sync:/mnt/sync
+  repobackup:
+    image: dan1elhughes/repobackup
+    container_name: repobackup
+    restart: always
+    volumes:
+      - $VOLUMEDIR/repobackup:/mirror
