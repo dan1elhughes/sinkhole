@@ -4,7 +4,7 @@ services:
   influxdb:
     image: influxdb
     container_name: influxdb
-    restart: always
+    restart: unless-stopped
     ports:
       - 8086:8086
     volumes:
@@ -12,7 +12,7 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
-    restart: always
+    restart: unless-stopped
     user: "0:0" # ¯\_(ツ)_/¯
     ports:
       - 3000:3000
@@ -21,7 +21,7 @@ services:
   organizr:
     image: organizrtools/organizr-v2
     container_name: organizr
-    restart: always
+    restart: unless-stopped
     ports:
       - 8080:80
     volumes:
@@ -29,7 +29,7 @@ services:
   urbackup:
     image: uroni/urbackup-server
     container_name: urbackup
-    restart: always
+    restart: unless-stopped
     volumes:
       - $VOLUMEDIR/urbackup-db:/var/urbackup
       - $VOLUMEDIR/urbackup-backups:/backups
@@ -37,7 +37,7 @@ services:
   transmission:
     image: linuxserver/transmission
     container_name: transmission
-    restart: always
+    restart: unless-stopped
     ports:
       - 51413:51413/tcp
       - 51413:51413/udp
@@ -49,7 +49,7 @@ services:
   sync:
     image: resilio/sync
     container_name: sync
-    restart: always
+    restart: unless-stopped
     ports:
       - 55555
     volumes:
@@ -57,6 +57,19 @@ services:
   repobackup:
     image: dan1elhughes/repobackup
     container_name: repobackup
-    restart: always
+    restart: unless-stopped
     volumes:
       - $VOLUMEDIR/repobackup:/mirror
+  piholeinflux:
+    image: registry.gitlab.com/janw/pi-hole-influx
+    container_name: pihole-exporter
+    restart: unless-stopped
+    environment:
+      PIHOLE_INFLUXDB_HOST: influxdb
+      PIHOLE_INFLUXDB_PORT: "8086"
+      PIHOLE_INFLUXDB_USERNAME: "root"
+      PIHOLE_INFLUXDB_PASSWORD: "root"
+      PIHOLE_INFLUXDB_DATABASE: "telegraf"
+
+      # Replace with your Pi-Hole's address including path to API below
+      PIHOLE_INSTANCES: "sinkhole=http://192.168.1.128/admin/api.php"
