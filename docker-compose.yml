@@ -73,12 +73,3 @@ services:
 
       # Replace with your Pi-Hole's address including path to API below
       PIHOLE_INSTANCES: "sinkhole=http://192.168.1.128/admin/api.php"
-  homeassistant:
-    image: homeassistant/home-assistant:stable
-    container_name: homeassistant
-    volumes:
-      - $VOLUMEDIR/homeassistant:/config
-    environment:
-      - TZ=Europe/London
-    restart: unless-stopped
-    network_mode: host
