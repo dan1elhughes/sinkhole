@@ -23,7 +23,7 @@ services:
     container_name: organizr
     restart: unless-stopped
     ports:
-      - 8080:80
+      - 8888:80
     volumes:
       - $VOLUMEDIR/organizr:/config
   urbackup:
@@ -70,6 +70,11 @@ services:
       PIHOLE_INFLUXDB_USERNAME: "root"
       PIHOLE_INFLUXDB_PASSWORD: "root"
       PIHOLE_INFLUXDB_DATABASE: "telegraf"
-
-      # Replace with your Pi-Hole's address including path to API below
       PIHOLE_INSTANCES: "sinkhole=http://192.168.1.128/admin/api.php"
+  iot-gateway:
+    container_name: iot-gateway
+    image: mozillaiot/gateway:latest
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - $VOLUMEDIR/iot-gateway:/home/node/.mozilla-iot
