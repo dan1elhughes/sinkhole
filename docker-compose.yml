@@ -94,3 +94,25 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+  lychee:
+    container_name: lychee
+    image: linuxserver/lychee
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/London
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - $VOLUMEDIR/lychee:/config
+      - /media/pit/shares/dan/lychee:/pictures
+    ports:
+      - 8111:80
+  mysql:
+    container_name: mysql
+    image: mysql
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - $VOLUMEDIR/mysql:/var/lib/mysql
