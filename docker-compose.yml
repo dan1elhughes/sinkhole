@@ -88,3 +88,9 @@ services:
       MINIDLNA_FRIENDLY_NAME: "Sinkhole"
     volumes:
       - /media/pit/shares/media:/media:ro
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
