@@ -71,13 +71,6 @@ services:
       PIHOLE_INFLUXDB_PASSWORD: "root"
       PIHOLE_INFLUXDB_DATABASE: "telegraf"
       PIHOLE_INSTANCES: "sinkhole=http://192.168.1.128/admin/api.php"
-  iot-gateway:
-    container_name: iot-gateway
-    image: mozillaiot/gateway:latest
-    restart: unless-stopped
-    network_mode: host
-    volumes:
-      - $VOLUMEDIR/iot-gateway:/home/node/.mozilla-iot
   minidlna:
     container_name: minidlna
     image: vladgh/minidlna
@@ -92,6 +85,9 @@ services:
     container_name: watchtower
     image: containrrr/watchtower
     restart: unless-stopped
+    environment:
+      - WATCHTOWER_NOTIFICATIONS=slack
+      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=$WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
   lychee:
