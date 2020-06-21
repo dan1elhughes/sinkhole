@@ -81,15 +81,6 @@ services:
       MINIDLNA_FRIENDLY_NAME: "Sinkhole"
     volumes:
       - /media/pit/shares/media:/media:ro
-  watchtower:
-    container_name: watchtower
-    image: containrrr/watchtower
-    restart: unless-stopped
-    environment:
-      - WATCHTOWER_NOTIFICATIONS=slack
-      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=$WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
   lychee:
     container_name: lychee
     image: linuxserver/lychee
@@ -108,7 +99,20 @@ services:
     image: mysql
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - $VOLUMEDIR/mysql:/var/lib/mysql
+  motioneye:
+    container_name: motioneye
+    image: ccrisan/motioneye:master-amd64
+    restart: unless-stopped
+    hostname: motioneye
+    ports:
+      - 8765:8765
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - $VOLUMEDIR/motioneye/etc:/etc/motioneye
+      - $VOLUMEDIR/motioneye/varlib:/var/lib/motioneye
