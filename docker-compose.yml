@@ -116,3 +116,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - $VOLUMEDIR/motioneye/etc:/etc/motioneye
       - $VOLUMEDIR/motioneye/varlib:/var/lib/motioneye
+  sheets-monzo-exporter:
+    container_name: sheets-monzo-exporter
+    image: dan1elhughes/sheets-monzo-exporter:latest
+    restart: unless-stopped
+    ports:
+      - 3123:3000
+    volumes:
+      - $VOLUMEDIR/sheets-monzo-exporter:/usr/src/app/storage
