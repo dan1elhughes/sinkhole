@@ -1,3 +1,5 @@
+# WARNING
+# COPY THIS FILE OUT LOCALLY FIRST, IT MAY HAVE CHANGED
 ---
 version: "2"
 services:
@@ -19,21 +21,17 @@ services:
     volumes:
       - $VOLUMEDIR/grafana:/var/lib/grafana
   organizr:
-    image: organizrtools/organizr-v2
+    image: organizr/organizr
     container_name: organizr
     restart: unless-stopped
     ports:
       - 8888:80
     volumes:
       - $VOLUMEDIR/organizr:/config
-  urbackup:
-    image: uroni/urbackup-server
-    container_name: urbackup
-    restart: unless-stopped
-    volumes:
-      - $VOLUMEDIR/urbackup-db:/var/urbackup
-      - $VOLUMEDIR/urbackup-backups:/backups
-    network_mode: "host"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
   transmission:
     image: linuxserver/transmission
     container_name: transmission
@@ -44,8 +42,8 @@ services:
       - 9091:9091
     volumes:
       - $VOLUMEDIR/transmission:/config
-      - /media/pit/shares/torrents/watch:/watch
-      - /media/pit/shares/torrents/downloads:/downloads
+      - /media/pit/torrents/watch:/watch
+      - /media/pit/torrents/downloads:/downloads
   sync:
     image: resilio/sync
     container_name: sync
@@ -54,6 +52,25 @@ services:
       - 55555
     volumes:
       - $VOLUMEDIR/sync:/mnt/sync
+    environment:
+      PUID: 1000
+      PGID: 1004
+  syncthing:
+    image: ghcr.io/linuxserver/syncthing
+    container_name: syncthing
+    hostname: sinkhole
+    environment:
+      PUID: 1000
+      PGID: 1004
+      TZ: Europe/London
+    volumes:
+      - $VOLUMEDIR/sync/config:/config
+      - $VOLUMEDIR/sync/data:/data
+    ports:
+      - 8384:8384
+      - 22000:22000
+      - 21027:21027/udp
+    restart: unless-stopped
   repobackup:
     image: dan1elhughes/repobackup
     container_name: repobackup
@@ -71,16 +88,8 @@ services:
       PIHOLE_INFLUXDB_PASSWORD: "root"
       PIHOLE_INFLUXDB_DATABASE: "telegraf"
       PIHOLE_INSTANCES: "sinkhole=http://192.168.1.128/admin/api.php"
-  minidlna:
-    container_name: minidlna
-    image: vladgh/minidlna
-    restart: unless-stopped
-    network_mode: host
-    environment:
-      MINIDLNA_MEDIA_DIR: "/media"
-      MINIDLNA_FRIENDLY_NAME: "Sinkhole"
-    volumes:
-      - /media/pit/shares/media:/media:ro
+    depends_on:
+      - influxdb
   lychee:
     container_name: lychee
     image: linuxserver/lychee
@@ -91,9 +100,11 @@ services:
       - PGID=1000
     volumes:
       - $VOLUMEDIR/lychee:/config
-      - /media/pit/shares/dan/lychee:/pictures
+      - /home/dan/lychee:/pictures
     ports:
       - 8111:80
+    depends_on:
+      - mysql
   mysql:
     container_name: mysql
     image: mysql
@@ -116,11 +127,52 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - $VOLUMEDIR/motioneye/etc:/etc/motioneye
       - $VOLUMEDIR/motioneye/varlib:/var/lib/motioneye
-  sheets-monzo-exporter:
-    container_name: sheets-monzo-exporter
-    image: dan1elhughes/sheets-monzo-exporter:latest
+  timemachine:
+    container_name: timemachine
     restart: unless-stopped
-    ports:
-      - 3123:3000
     volumes:
-      - $VOLUMEDIR/sheets-monzo-exporter:/usr/src/app/storage
+      - /media/pit/timemachine:/timemachine
+    ports:
+      - 548:548
+      - 636:636
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    image: odarriba/timemachine
+  plex:
+    image: ghcr.io/linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - $VOLUMEDIR/plex:/config
+      - "/media/pit/media/TV Shows:/tv"
+      - /media/pit/media/Movies:/movies
+    restart: unless-stopped
+  freshrss:
+    image: ghcr.io/linuxserver/freshrss
+    container_name: freshrss
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - $VOLUMEDIR/freshrss:/config
+    ports:
+      - 8123:80
+    restart: unless-stopped
+    depends_on:
+      - mysql
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+    ports:
+      - 8080:80
+    depends_on:
+      - mysql
+    restart: unless-stopped
