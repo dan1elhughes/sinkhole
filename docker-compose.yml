@@ -64,8 +64,8 @@ services:
       PGID: 1004
       TZ: Europe/London
     volumes:
-      - $VOLUMEDIR/sync/config:/config
-      - $VOLUMEDIR/sync/data:/data
+      - $VOLUMEDIR/syncthing/config:/config
+      - $VOLUMEDIR/syncthing/data:/data
     ports:
       - 8384:8384
       - 22000:22000
