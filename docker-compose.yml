@@ -90,21 +90,6 @@ services:
       PIHOLE_INSTANCES: "sinkhole=http://192.168.1.128/admin/api.php"
     depends_on:
       - influxdb
-  lychee:
-    container_name: lychee
-    image: linuxserver/lychee
-    restart: unless-stopped
-    environment:
-      - TZ=Europe/London
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - $VOLUMEDIR/lychee:/config
-      - /home/dan/lychee:/pictures
-    ports:
-      - 8111:80
-    depends_on:
-      - mysql
   mysql:
     container_name: mysql
     image: mysql
