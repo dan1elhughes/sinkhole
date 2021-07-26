@@ -161,6 +161,8 @@ services:
       - PHOTOPRISM_DATABASE_SERVER=mysql
       - PHOTOPRISM_DATABASE_USER=root
       - PHOTOPRISM_DATABASE_PASSWORD=root
+      - UID=1000
+      - GID=1003
     ports:
       - "2342:2342"
     volumes:
