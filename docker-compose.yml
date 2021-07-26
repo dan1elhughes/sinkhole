@@ -136,7 +136,7 @@ services:
     volumes:
       - $VOLUMEDIR/freshrss:/config
     ports:
-      - 8123:80
+      - 8434:80
     restart: unless-stopped
     depends_on:
       - mysql
@@ -207,3 +207,17 @@ services:
       PAPERLESS_ADMIN_USER: paperless
       PAPERLESS_ADMIN_PASSWORD: paperless
       PAPERLESS_AUTO_LOGIN_USERNAME: paperless
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1004
+      - TZ=Europe/London
+    volumes:
+      - "/$VOLUMEDIR/homeassistant:/config"
+    ports:
+      - 8123:8123 #optional
