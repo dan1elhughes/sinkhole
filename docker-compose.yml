@@ -44,17 +44,6 @@ services:
       - $VOLUMEDIR/transmission:/config
       - /media/pit/torrents/watch:/watch
       - /media/pit/torrents/downloads:/downloads
-  sync:
-    image: resilio/sync
-    container_name: sync
-    restart: unless-stopped
-    ports:
-      - 55555
-    volumes:
-      - $VOLUMEDIR/sync:/mnt/sync
-    environment:
-      PUID: 1000
-      PGID: 1004
   syncthing:
     image: ghcr.io/linuxserver/syncthing
     container_name: syncthing
