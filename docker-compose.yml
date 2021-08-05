@@ -222,3 +222,14 @@ services:
       - "/dev/ttyACM0:/dev/ttyACM0"
     ports:
       - 8123:8123 #optional
+  eclipse-mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    restart: unless-stopped
+    ports:
+      - 1883:1883
+      - 9001:9001
+    volumes:
+      - "/home/dan/sinkhole/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+      - "$VOLUMEDIR/mosquitto/data:/mosquitto/data"
+      - "$VOLUMEDIR/mosquitto/log:/mosquitto/log"
