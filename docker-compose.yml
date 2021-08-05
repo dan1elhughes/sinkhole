@@ -219,5 +219,6 @@ services:
       - TZ=Europe/London
     volumes:
       - "/$VOLUMEDIR/homeassistant:/config"
+      - "/dev/ttyACM0:/dev/ttyACM0"
     ports:
       - 8123:8123 #optional
