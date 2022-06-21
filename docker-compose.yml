@@ -47,8 +47,7 @@ services:
       - 9091:9091
     volumes:
       - $VOLUMEDIR/transmission:/config
-      - /media/pit/torrents/watch:/watch
-      - /media/pit/torrents/downloads:/downloads
+      - "/media/pit/media/downloads:/downloads"
   syncthing:
     image: lscr.io/linuxserver/syncthing
     container_name: syncthing
@@ -128,8 +127,7 @@ services:
       - PGID=1000
     volumes:
       - $VOLUMEDIR/plex:/config
-      - "/media/pit/media/TV Shows:/tv"
-      - /media/pit/media/Movies:/movies
+      - "/media/pit/media/media:/media"
     restart: unless-stopped
   freshrss:
     image: lscr.io/linuxserver/freshrss
