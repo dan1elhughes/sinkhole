@@ -233,3 +233,57 @@ services:
       - "/home/dan/sinkhole/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf"
       - "$VOLUMEDIR/mosquitto/data:/mosquitto/data"
       - "$VOLUMEDIR/mosquitto/log:/mosquitto/log"
+  jackett:
+    container_name: jackett
+    image: lscr.io/linuxserver/jackett
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1004
+      - TZ=Europe/London
+    volumes:
+      - "/$VOLUMEDIR/jackett:/config"
+    ports:
+      - 9117:9117
+  sonarr:
+    container_name: sonarr
+    image: lscr.io/linuxserver/sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1004
+      - TZ=Europe/London
+    volumes:
+      - "/$VOLUMEDIR/sonarr/config:/config"
+      - "/media/pit/media:/data"
+      - "/media/pit/media/downloads:/downloads"
+    ports:
+      - 8989:8989
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1004
+      - TZ=Europe/London
+    volumes:
+      - "/$VOLUMEDIR/radarr/config:/config"
+      - "/media/pit/media:/data"
+      - "/media/pit/media/downloads:/downloads"
+    ports:
+      - 7878:7878
+  lidarr:
+    container_name: lidarr
+    image: lscr.io/linuxserver/lidarr
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1004
+      - TZ=Europe/London
+    volumes:
+      - "/$VOLUMEDIR/lidarr/config:/config"
+      - "/media/pit/media:/data"
+      - "/media/pit/media/downloads:/downloads"
+    ports:
+      - 8686:8686
