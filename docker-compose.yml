@@ -36,6 +36,11 @@ services:
     image: linuxserver/transmission
     container_name: transmission
     restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1004
+      - USER=transmission
+      - PASS=transmission
     ports:
       - 51413:51413/tcp
       - 51413:51413/udp
