@@ -4,7 +4,7 @@
 version: "2"
 services:
   influxdb:
-    image: influxdb
+    image: influxdb:1.8
     container_name: influxdb
     restart: unless-stopped
     ports:
