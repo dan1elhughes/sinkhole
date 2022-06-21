@@ -45,7 +45,7 @@ services:
       - /media/pit/torrents/watch:/watch
       - /media/pit/torrents/downloads:/downloads
   syncthing:
-    image: ghcr.io/linuxserver/syncthing
+    image: lscr.io/linuxserver/syncthing
     container_name: syncthing
     hostname: sinkhole
     environment:
@@ -115,7 +115,7 @@ services:
         hard: 65536
     image: odarriba/timemachine
   plex:
-    image: ghcr.io/linuxserver/plex
+    image: lscr.io/linuxserver/plex
     container_name: plex
     network_mode: host
     environment:
@@ -127,7 +127,7 @@ services:
       - /media/pit/media/Movies:/movies
     restart: unless-stopped
   freshrss:
-    image: ghcr.io/linuxserver/freshrss
+    image: lscr.io/linuxserver/freshrss
     container_name: freshrss
     environment:
       - PUID=1000
