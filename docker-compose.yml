@@ -289,3 +289,18 @@ services:
       - "/media/pit/media/downloads:/downloads"
     ports:
       - 8686:8686
+  airsonic-advanced:
+    container_name: airsonic-advanced
+    image: airsonicadvanced/airsonic-advanced:latest
+    restart: unless-stopped
+    environment:
+      TZ: Europe/London
+    ports:
+      - 4040:4040
+      - 4041:4041
+    user: 1000:1004
+    volumes:
+      - "/media/pit/media/media/playlists:/var/playlists"
+      - "/media/pit/media/media/podcasts:/var/podcasts"
+      - "/$VOLUMEDIR/airsonic:/var/airsonic"
+      - "/media/pit/media/media/music:/var/music"
