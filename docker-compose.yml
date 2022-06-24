@@ -3,35 +3,6 @@
 ---
 version: "2"
 services:
-  influxdb:
-    image: influxdb:1.8
-    container_name: influxdb
-    restart: unless-stopped
-    ports:
-      - 8086:8086
-    volumes:
-      - $VOLUMEDIR/influxdb:/var/lib/influxdb
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    restart: unless-stopped
-    user: "0:0" # ¯\_(ツ)_/¯
-    ports:
-      - 3000:3000
-    volumes:
-      - $VOLUMEDIR/grafana:/var/lib/grafana
-  organizr:
-    image: organizr/organizr
-    container_name: organizr
-    restart: unless-stopped
-    ports:
-      - 8888:80
-    volumes:
-      - $VOLUMEDIR/organizr:/config
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
   transmission:
     image: linuxserver/transmission
     container_name: transmission
@@ -70,19 +41,6 @@ services:
     restart: unless-stopped
     volumes:
       - $VOLUMEDIR/repobackup:/mirror
-  piholeinflux:
-    image: registry.gitlab.com/janw/pi-hole-influx
-    container_name: pihole-exporter
-    restart: unless-stopped
-    environment:
-      PIHOLE_INFLUXDB_HOST: influxdb
-      PIHOLE_INFLUXDB_PORT: "8086"
-      PIHOLE_INFLUXDB_USERNAME: "root"
-      PIHOLE_INFLUXDB_PASSWORD: "root"
-      PIHOLE_INFLUXDB_DATABASE: "telegraf"
-      PIHOLE_INSTANCES: "sinkhole=http://192.168.1.128/admin/api.php"
-    depends_on:
-      - influxdb
   mysql:
     container_name: mysql
     image: mysql
@@ -105,19 +63,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - $VOLUMEDIR/motioneye/etc:/etc/motioneye
       - $VOLUMEDIR/motioneye/varlib:/var/lib/motioneye
-  timemachine:
-    container_name: timemachine
-    restart: unless-stopped
-    volumes:
-      - /media/pit/timemachine:/timemachine
-    ports:
-      - 548:548
-      - 636:636
-    ulimits:
-      nofile:
-        soft: 65536
-        hard: 65536
-    image: odarriba/timemachine
   plex:
     image: lscr.io/linuxserver/plex
     container_name: plex
