@@ -249,3 +249,11 @@ services:
       - "/media/pit/media/media/podcasts:/var/podcasts"
       - "/$VOLUMEDIR/airsonic:/var/airsonic"
       - "/media/pit/media/media/music:/var/music"
+  changedetection:
+    container_name: changedetection
+    image: ghcr.io/dgtlmoon/changedetection.io
+    restart: unless-stopped
+    volumes:
+      - "/$VOLUMEDIR/changedetection:/datastore"
+    ports:
+      - 5000:5000
