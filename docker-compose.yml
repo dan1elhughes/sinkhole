@@ -52,17 +52,6 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - $VOLUMEDIR/mysql:/var/lib/mysql
-  motioneye:
-    container_name: motioneye
-    image: ccrisan/motioneye:master-amd64
-    restart: unless-stopped
-    hostname: motioneye
-    ports:
-      - 8765:8765
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - $VOLUMEDIR/motioneye/etc:/etc/motioneye
-      - $VOLUMEDIR/motioneye/varlib:/var/lib/motioneye
   plex:
     image: lscr.io/linuxserver/plex
     container_name: plex
@@ -155,31 +144,6 @@ services:
       PAPERLESS_ADMIN_USER: paperless
       PAPERLESS_ADMIN_PASSWORD: paperless
       PAPERLESS_AUTO_LOGIN_USERNAME: paperless
-  homeassistant:
-    container_name: homeassistant
-    image: ghcr.io/home-assistant/home-assistant:stable
-    restart: unless-stopped
-    privileged: true
-    network_mode: host
-    environment:
-      - TZ=Europe/London
-    volumes:
-      - "/$VOLUMEDIR/homeassistant:/config"
-      - "/$VOLUMEDIR/homeassistant-media:/media"
-      - "/dev/ttyACM0:/dev/ttyACM0"
-    ports:
-      - 8123:8123 #optional
-  eclipse-mosquitto:
-    container_name: mosquitto
-    image: eclipse-mosquitto
-    restart: unless-stopped
-    ports:
-      - 1883:1883
-      - 9001:9001
-    volumes:
-      - "/home/dan/sinkhole/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf"
-      - "$VOLUMEDIR/mosquitto/data:/mosquitto/data"
-      - "$VOLUMEDIR/mosquitto/log:/mosquitto/log"
   jackett:
     container_name: jackett
     image: lscr.io/linuxserver/jackett
@@ -234,26 +198,3 @@ services:
       - "/media/pit/media/downloads:/downloads"
     ports:
       - 8686:8686
-  airsonic-advanced:
-    container_name: airsonic-advanced
-    image: airsonicadvanced/airsonic-advanced:latest
-    restart: unless-stopped
-    environment:
-      TZ: Europe/London
-    ports:
-      - 4040:4040
-      - 4041:4041
-    user: 1000:1004
-    volumes:
-      - "/media/pit/media/media/playlists:/var/playlists"
-      - "/media/pit/media/media/podcasts:/var/podcasts"
-      - "/$VOLUMEDIR/airsonic:/var/airsonic"
-      - "/media/pit/media/media/music:/var/music"
-  changedetection:
-    container_name: changedetection
-    image: ghcr.io/dgtlmoon/changedetection.io
-    restart: unless-stopped
-    volumes:
-      - "/$VOLUMEDIR/changedetection:/datastore"
-    ports:
-      - 5000:5000
