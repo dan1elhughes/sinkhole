@@ -198,3 +198,26 @@ services:
       - "/media/pit/media/downloads:/downloads"
     ports:
       - 8686:8686
+  scrutiny:
+    container_name: scrutiny
+    image: ghcr.io/analogj/scrutiny:master-omnibus
+    restart: unless-stopped
+    cap_add:
+      - SYS_RAWIO
+    ports:
+      - "8992:8080" # webapp
+      - "8086:8086" # influxDB admin
+    volumes:
+      - "/run/udev:/run/udev:ro"
+      - "/$VOLUMEDIR/scrutiny/config:/opt/scrutiny/config"
+      - "/$VOLUMEDIR/scrutiny/influxdb:/opt/scrutiny/influxdb"
+    devices:
+      - "/dev/sda"
+      - "/dev/sdb"
+      - "/dev/sdc"
+      - "/dev/sdd"
+      - "/dev/sde"
+      - "/dev/sdf"
+      - "/dev/sdg"
+      - "/dev/sdh"
+      - "/dev/sdi"
