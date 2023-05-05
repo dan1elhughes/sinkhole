@@ -35,12 +35,6 @@ services:
       - 22000:22000
       - 21027:21027/udp
     restart: unless-stopped
-  repobackup:
-    image: dan1elhughes/repobackup
-    container_name: repobackup
-    restart: unless-stopped
-    volumes:
-      - $VOLUMEDIR/repobackup:/mirror
   mysql:
     container_name: mysql
     image: mysql
