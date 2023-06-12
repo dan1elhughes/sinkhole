@@ -220,3 +220,9 @@ services:
     image: atdr.meo.ws/archiveteam/reddit-grab
     restart: unless-stopped
     command: --concurrent 1 d1ffidence
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    restart: unless-stopped
+    volumes:
+        - '/var/run/docker.sock:/var/run/docker.sock'
