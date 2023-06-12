@@ -216,7 +216,7 @@ services:
       - "/dev/sdh"
       - "/dev/sdi"
   archiveteam:
-      container_name: archiveteam
-      image: atdr.meo.ws/archiveteam/reddit-grab
-      restart: unless-stopped
-      command: --concurrent 1 d1ffidence
+    container_name: archiveteam
+    image: atdr.meo.ws/archiveteam/reddit-grab
+    restart: unless-stopped
+    command: --concurrent 1 d1ffidence
