@@ -81,23 +81,15 @@ services:
     depends_on:
       - mysql
     restart: unless-stopped
-  photoprism:
-    image: photoprism/photoprism
-    container_name: photoprism
+  spis:
+    container_name: spis
+    image: ghcr.io/gbbirkisson/spis:latest
     restart: unless-stopped
-    environment:
-      - PHOTOPRISM_UPLOAD_NSFW=true
-      - PHOTOPRISM_ADMIN_PASSWORD=admin
-      - PHOTOPRISM_DATABASE_DRIVER=mysql
-      - PHOTOPRISM_DATABASE_SERVER=mysql
-      - PHOTOPRISM_DATABASE_USER=root
-      - PHOTOPRISM_DATABASE_PASSWORD=root
-      - UID=1000
-      - GID=1003
     ports:
-      - "2342:2342"
+      - '2342:8080'
     volumes:
-      - "$VOLUMEDIR/photoprism:/photoprism/originals"
+        - '$VOLUMEDIR/spis/media:/var/lib/spis/media'
+        - '$VOLUMEDIR/spis/data:/var/lib/spis/data'
   redis:
     container_name: redis
     image: redis:6.0
