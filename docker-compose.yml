@@ -215,8 +215,9 @@ services:
   watchtower:
     container_name: watchtower
     image: containrrr/watchtower
-    restart: unless-stopped
+    restart: on-failure
     volumes:
         - '/var/run/docker.sock:/var/run/docker.sock'
     environment:
         WATCHTOWER_NOTIFICATION_URL: "$WATCHTOWER_NOTIFICATION_URL"
+        WATCHTOWER_RUN_ONCE: "true"
