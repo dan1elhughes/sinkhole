@@ -19,22 +19,6 @@ services:
     volumes:
       - $VOLUMEDIR/transmission:/config
       - "/media/pit/media/downloads:/downloads"
-  syncthing:
-    image: lscr.io/linuxserver/syncthing
-    container_name: syncthing
-    hostname: sinkhole
-    environment:
-      PUID: 1000
-      PGID: 1004
-      TZ: Europe/London
-    volumes:
-      - $VOLUMEDIR/syncthing/config:/config
-      - $VOLUMEDIR/syncthing/data:/data
-    ports:
-      - 8384:8384
-      - 22000:22000
-      - 21027:21027/udp
-    restart: unless-stopped
   mysql:
     container_name: mysql
     image: mysql
@@ -184,34 +168,6 @@ services:
       - "/$VOLUMEDIR/prowlarr:/config"
     ports:
       - 9696:9696
-  scrutiny:
-    container_name: scrutiny
-    image: ghcr.io/analogj/scrutiny:master-omnibus
-    restart: unless-stopped
-    cap_add:
-      - SYS_RAWIO
-    ports:
-      - "8992:8080" # webapp
-      - "8086:8086" # influxDB admin
-    volumes:
-      - "/run/udev:/run/udev:ro"
-      - "/$VOLUMEDIR/scrutiny/config:/opt/scrutiny/config"
-      - "/$VOLUMEDIR/scrutiny/influxdb:/opt/scrutiny/influxdb"
-    devices:
-      - "/dev/sda"
-      - "/dev/sdb"
-      - "/dev/sdc"
-      - "/dev/sdd"
-      - "/dev/sde"
-      - "/dev/sdf"
-      - "/dev/sdg"
-      - "/dev/sdh"
-      - "/dev/sdi"
-  archiveteam:
-    container_name: archiveteam
-    image: atdr.meo.ws/archiveteam/reddit-grab
-    restart: unless-stopped
-    command: --concurrent 1 d1ffidence
   watchtower:
     container_name: watchtower
     image: containrrr/watchtower
