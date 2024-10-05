@@ -1,0 +1,92 @@
+# WARNING
+# COPY THIS FILE OUT LOCALLY FIRST, IT MAY HAVE CHANGED
+---
+version: "2"
+services:
+
+  transmission:
+    image: linuxserver/transmission
+    container_name: transmission
+    restart: unless-stopped
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - USER=transmission
+      - PASS=transmission
+    ports:
+      - 51413:51413/tcp
+      - 51413:51413/udp
+      - 9092:9091
+    volumes:
+      - "$VOLUMEDIR/transmission:/config"
+      - "$DOWNLOADSDIR:/downloads"
+
+  plex:
+    image: lscr.io/linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+    volumes:
+      - "$VOLUMEDIR/plex:/config"
+      - "$MEDIADIR/media:/media"
+    restart: unless-stopped
+
+  sonarr:
+    container_name: sonarr
+    image: lscr.io/linuxserver/sonarr
+    restart: unless-stopped
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=Europe/London
+    volumes:
+      - "$VOLUMEDIR/sonarr/config:/config"
+      - "$MEDIADIR:/data"
+      - "$DOWNLOADSDIR:/downloads"
+    ports:
+      - 8989:8989
+
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr
+    restart: unless-stopped
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=Europe/London
+    volumes:
+      - "$VOLUMEDIR/radarr/config:/config"
+      - "$MEDIADIR:/data"
+      - "$DOWNLOADSDIR:/downloads"
+    ports:
+      - 7878:7878
+
+  lidarr:
+    container_name: lidarr
+    image: lscr.io/linuxserver/lidarr
+    restart: unless-stopped
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=Europe/London
+    volumes:
+      - "$VOLUMEDIR/lidarr/config:/config"
+      - "$MEDIADIR:/data"
+      - "$DOWNLOADSDIR:/downloads"
+    ports:
+      - 8686:8686
+
+  prowlarr:
+    container_name: prowlarr
+    image: lscr.io/linuxserver/prowlarr:latest
+    restart: unless-stopped
+    environment:
+      - PUID=$PUID
+      - PGID=$PGID
+      - TZ=Europe/London
+    volumes:
+      - "$VOLUMEDIR/prowlarr:/config"
+    ports:
+      - 9696:9696
