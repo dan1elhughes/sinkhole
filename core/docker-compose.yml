@@ -1,7 +1,6 @@
 # WARNING
 # COPY THIS FILE OUT LOCALLY FIRST, IT MAY HAVE CHANGED
 ---
-version: "2"
 services:
 
   # TODO: Move this
