@@ -17,9 +17,11 @@ services:
   watchtower:
     container_name: watchtower
     image: containrrr/watchtower
-    restart: on-failure
+    restart: unless-stopped
     volumes:
         - '/var/run/docker.sock:/var/run/docker.sock'
     environment:
+        WATCHTOWER_SCHEDULE: "@monthly"
         WATCHTOWER_NOTIFICATION_URL: "$WATCHTOWER_NOTIFICATION_URL"
-        WATCHTOWER_RUN_ONCE: "true"
+        WATCHTOWER_CLEANUP: "true"
+        WATCHTOWER_DEBUG: "true"
