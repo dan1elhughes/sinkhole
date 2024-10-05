@@ -4,15 +4,15 @@
 services:
 
   # TODO: Move this
-  spis:
-    container_name: spis
-    image: ghcr.io/gbbirkisson/spis:latest
-    restart: unless-stopped
-    ports:
-      - '2342:8080'
-    volumes:
-        - '$VOLUMEDIR/spis/media:/var/lib/spis/media'
-        - '$VOLUMEDIR/spis/data:/var/lib/spis/data'
+  # spis:
+  #   container_name: spis
+  #   image: ghcr.io/gbbirkisson/spis:latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - '2342:8080'
+  #   volumes:
+  #       - '$VOLUMEDIR/spis/media:/var/lib/spis/media'
+  #       - '$VOLUMEDIR/spis/data:/var/lib/spis/data'
 
   watchtower:
     container_name: watchtower
