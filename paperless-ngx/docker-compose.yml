@@ -1,0 +1,37 @@
+services:
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    volumes:
+      - volredis:/data
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    volumes:
+      - ${VOLUMEDIR?error}/paperless_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
+
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8774:8000"
+    volumes:
+      - ${VOLUMEDIR?error}/paperless_data:/usr/src/paperless/data
+      - ${VOLUMEDIR?error}/paperless_media:/usr/src/paperless/media
+      - ${VOLUMEDIR?error}/paperless_export:/usr/src/paperless/export
+      - ${VOLUMEDIR?error}/paperless_consume:/usr/src/paperless/consume
+    environment:
+      PAPERLESS_REDIS: redis://redis:6379
+      PAPERLESS_DBHOST: postgres
+
+volumes:
+  volredis:
+
