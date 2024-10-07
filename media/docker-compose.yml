@@ -8,8 +8,8 @@ services:
     container_name: transmission
     restart: unless-stopped
     environment:
-      - PUID=$PUID
-      - PGID=$PGID
+      - PUID={$PUID?error}
+      - PGID={$PGID?error}
       - USER=transmission
       - PASS=transmission
     ports:
@@ -17,19 +17,19 @@ services:
       - 51413:51413/udp
       - 9092:9091
     volumes:
-      - "$VOLUMEDIR/transmission:/config"
-      - "$DOWNLOADSDIR:/downloads"
+      - "{$VOLUMEDIR?error}/transmission:/config"
+      - "{$DOWNLOADSDIR?error}:/downloads"
 
   plex:
     image: lscr.io/linuxserver/plex
     container_name: plex
     network_mode: host
     environment:
-      - PUID=$PUID
-      - PGID=$PGID
+      - PUID={$PUID?error}
+      - PGID={$PGID?error}
     volumes:
-      - "$VOLUMEDIR/plex:/config"
-      - "$MEDIADIR/media:/media"
+      - "{$VOLUMEDIR?error}/plex:/config"
+      - "{$MEDIADIR?error}/media:/media"
     restart: unless-stopped
 
   sonarr:
@@ -37,13 +37,13 @@ services:
     image: lscr.io/linuxserver/sonarr
     restart: unless-stopped
     environment:
-      - PUID=$PUID
-      - PGID=$PGID
+      - PUID={$PUID?error}
+      - PGID={$PGID?error}
       - TZ=Europe/London
     volumes:
-      - "$VOLUMEDIR/sonarr/config:/config"
-      - "$MEDIADIR:/data"
-      - "$DOWNLOADSDIR:/downloads"
+      - "{$VOLUMEDIR?error}/sonarr/config:/config"
+      - "{$MEDIADIR?error}:/data"
+      - "{$DOWNLOADSDIR?error}:/downloads"
     ports:
       - 8989:8989
 
@@ -52,13 +52,13 @@ services:
     image: lscr.io/linuxserver/radarr
     restart: unless-stopped
     environment:
-      - PUID=$PUID
-      - PGID=$PGID
+      - PUID={$PUID?error}
+      - PGID={$PGID?error}
       - TZ=Europe/London
     volumes:
-      - "$VOLUMEDIR/radarr/config:/config"
-      - "$MEDIADIR:/data"
-      - "$DOWNLOADSDIR:/downloads"
+      - "{$VOLUMEDIR?error}/radarr/config:/config"
+      - "{$MEDIADIR?error}:/data"
+      - "{$DOWNLOADSDIR?error}:/downloads"
     ports:
       - 7878:7878
 
@@ -67,13 +67,13 @@ services:
     image: lscr.io/linuxserver/lidarr
     restart: unless-stopped
     environment:
-      - PUID=$PUID
-      - PGID=$PGID
+      - PUID={$PUID?error}
+      - PGID={$PGID?error}
       - TZ=Europe/London
     volumes:
-      - "$VOLUMEDIR/lidarr/config:/config"
-      - "$MEDIADIR:/data"
-      - "$DOWNLOADSDIR:/downloads"
+      - "{$VOLUMEDIR?error}/lidarr/config:/config"
+      - "{$MEDIADIR?error}:/data"
+      - "{$DOWNLOADSDIR?error}:/downloads"
     ports:
       - 8686:8686
 
@@ -82,10 +82,10 @@ services:
     image: lscr.io/linuxserver/prowlarr:latest
     restart: unless-stopped
     environment:
-      - PUID=$PUID
-      - PGID=$PGID
+      - PUID={$PUID?error}
+      - PGID={$PGID?error}
       - TZ=Europe/London
     volumes:
-      - "$VOLUMEDIR/prowlarr:/config"
+      - "{$VOLUMEDIR?error}/prowlarr:/config"
     ports:
       - 9696:9696

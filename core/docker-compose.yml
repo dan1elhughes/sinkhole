@@ -1,5 +1,3 @@
-# WARNING
-# COPY THIS FILE OUT LOCALLY FIRST, IT MAY HAVE CHANGED
 ---
 services:
 
@@ -11,8 +9,8 @@ services:
   #   ports:
   #     - '2342:8080'
   #   volumes:
-  #       - '$VOLUMEDIR/spis/media:/var/lib/spis/media'
-  #       - '$VOLUMEDIR/spis/data:/var/lib/spis/data'
+  #       - '${VOLUMEDIR?error}/spis/media:/var/lib/spis/media'
+  #       - '${VOLUMEDIR?error}/spis/data:/var/lib/spis/data'
 
   watchtower:
     container_name: watchtower
@@ -22,7 +20,7 @@ services:
         - '/var/run/docker.sock:/var/run/docker.sock'
     environment:
         WATCHTOWER_SCHEDULE: "@monthly"
-        WATCHTOWER_NOTIFICATION_URL: "$WATCHTOWER_NOTIFICATION_URL"
+        WATCHTOWER_NOTIFICATION_URL: "${WATCHTOWER_NOTIFICATION_URL?error}"
         WATCHTOWER_CLEANUP: "true"
         WATCHTOWER_DEBUG: "true"
         WATCHTOWER_NOTIFICATION_TITLE_TAG: "${HOST?error}"
