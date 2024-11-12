@@ -1,35 +1,31 @@
-# WARNING
-# COPY THIS FILE OUT LOCALLY FIRST, IT MAY HAVE CHANGED
----
 services:
-
   transmission:
     image: linuxserver/transmission
     container_name: transmission
     restart: unless-stopped
     environment:
-      - PUID={$PUID?error}
-      - PGID={$PGID?error}
+      - PUID=${PUID?error}
+      - PGID=${PGID?error}
       - USER=transmission
       - PASS=transmission
     ports:
-      - 51413:51413/tcp
-      - 51413:51413/udp
-      - 9092:9091
+      - "51413:51413/tcp"
+      - "51413:51413/udp"
+      - "9092:9091"
     volumes:
-      - "{$VOLUMEDIR?error}/transmission:/config"
-      - "{$DOWNLOADSDIR?error}:/downloads"
+      - "${VOLUMEDIR?error}/transmission:/config"
+      - "${DOWNLOADSDIR?error}:/downloads"
 
   plex:
     image: lscr.io/linuxserver/plex
     container_name: plex
     network_mode: host
     environment:
-      - PUID={$PUID?error}
-      - PGID={$PGID?error}
+      - PUID=${PUID?error}
+      - PGID=${PGID?error}
     volumes:
-      - "{$VOLUMEDIR?error}/plex:/config"
-      - "{$MEDIADIR?error}/media:/media"
+      - "${VOLUMEDIR?error}/plex:/config"
+      - "${DATADIR?error}:/data"
     restart: unless-stopped
 
   sonarr:
@@ -37,55 +33,55 @@ services:
     image: lscr.io/linuxserver/sonarr
     restart: unless-stopped
     environment:
-      - PUID={$PUID?error}
-      - PGID={$PGID?error}
+      - PUID=${PUID?error}
+      - PGID=${PGID?error}
       - TZ=Europe/London
     volumes:
-      - "{$VOLUMEDIR?error}/sonarr/config:/config"
-      - "{$MEDIADIR?error}:/data"
-      - "{$DOWNLOADSDIR?error}:/downloads"
+      - "${VOLUMEDIR?error}/sonarr/config:/config"
+      - "${DATADIR?error}:/data"
+      - "${DOWNLOADSDIR?error}:/downloads"
     ports:
-      - 8989:8989
+      - "8989:8989"
 
   radarr:
     container_name: radarr
     image: lscr.io/linuxserver/radarr
     restart: unless-stopped
     environment:
-      - PUID={$PUID?error}
-      - PGID={$PGID?error}
+      - PUID=${PUID?error}
+      - PGID=${PGID?error}
       - TZ=Europe/London
     volumes:
-      - "{$VOLUMEDIR?error}/radarr/config:/config"
-      - "{$MEDIADIR?error}:/data"
-      - "{$DOWNLOADSDIR?error}:/downloads"
+      - "${VOLUMEDIR?error}/radarr/config:/config"
+      - "${DATADIR?error}:/data"
+      - "${DOWNLOADSDIR?error}:/downloads"
     ports:
-      - 7878:7878
+      - "7878:7878"
 
   lidarr:
     container_name: lidarr
     image: lscr.io/linuxserver/lidarr
     restart: unless-stopped
     environment:
-      - PUID={$PUID?error}
-      - PGID={$PGID?error}
+      - PUID=${PUID?error}
+      - PGID=${PGID?error}
       - TZ=Europe/London
     volumes:
-      - "{$VOLUMEDIR?error}/lidarr/config:/config"
-      - "{$MEDIADIR?error}:/data"
-      - "{$DOWNLOADSDIR?error}:/downloads"
+      - "${VOLUMEDIR?error}/lidarr/config:/config"
+      - "${DATADIR?error}:/data"
+      - "${DOWNLOADSDIR?error}:/downloads"
     ports:
-      - 8686:8686
+      - "8686:8686"
 
   prowlarr:
     container_name: prowlarr
     image: lscr.io/linuxserver/prowlarr:latest
     restart: unless-stopped
     environment:
-      - PUID={$PUID?error}
-      - PGID={$PGID?error}
+      - PUID=${PUID?error}
+      - PGID=${PGID?error}
       - TZ=Europe/London
     volumes:
-      - "{$VOLUMEDIR?error}/prowlarr:/config"
+      - "${VOLUMEDIR?error}/prowlarr:/config"
     ports:
-      - 9696:9696
+      - "9696:9696"
