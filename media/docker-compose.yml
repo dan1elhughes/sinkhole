@@ -85,3 +85,15 @@ services:
       - "${VOLUMEDIR?error}/prowlarr:/config"
     ports:
       - "9696:9696"
+  ombi:
+    container_name: ombi
+    image: lscr.io/linuxserver/ombi:latest
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID?error}
+      - PGID=${PGID?error}
+      - TZ=Europe/London
+    volumes:
+      - "${VOLUMEDIR?error}/ombi:/config"
+    ports:
+      - 3579:3579
