@@ -29,11 +29,18 @@ services:
         read only = no
         browseable = yes
 
+        [backup]
+        path=/shares/backup
+        valid users = dan
+        guest ok = no
+        read only = no
+        browseable = yes
+
       ACCOUNT_homeassistant: "homeassistant:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:C7720F6919CFB0CF35CE418DBE710E04:[U          ]:LCT-674C9AC2:"
       SAMBA_VOLUME_CONFIG_homeassistant: |
         [homeassistant]
         path=/shares/homeassistant
-        valid users = homeassistant, dan
+        valid users = homeassistant
         guest ok = no
         read only = no
         browseable = yes
@@ -41,3 +48,4 @@ services:
     volumes:
       - "/media/backup/homeassistant:/shares/homeassistant"
       - "/home/dan:/shares/dan"
+      - "/media/backup:/shares/backup"
