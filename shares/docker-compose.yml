@@ -1,0 +1,43 @@
+services:
+  samba:
+    container_name: samba
+    image: ghcr.io/servercontainers/samba
+    restart: unless-stopped
+    ports:
+      - "445:445"
+    environment:
+      FAIL_FAST: 1
+      WSDD2_DISABLE: 1
+      AVAHI_DISABLE: 1
+      SAMBA_GLOBAL_STANZA: |
+        [global]
+        vfs objects = fruit streams_xattr
+        fruit:metadata = stream
+        fruit:model = MacSamba
+        fruit:veto_appledouble = no
+        fruit:nfs_aces = no
+        fruit:wipe_intentionally_left_blank_rfork = yes
+        fruit:delete_empty_adfiles = yes
+        fruit:posix_rename = yes
+
+      ACCOUNT_dan: "dan:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:344FF3EC4C059976A89EFC829C34F3FE:[U          ]:LCT-674C9CD0:"
+      SAMBA_VOLUME_CONFIG_dan: |
+        [dan]
+        path=/shares/dan
+        valid users = dan
+        guest ok = no
+        read only = no
+        browseable = yes
+
+      ACCOUNT_homeassistant: "homeassistant:1000:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX:C7720F6919CFB0CF35CE418DBE710E04:[U          ]:LCT-674C9AC2:"
+      SAMBA_VOLUME_CONFIG_homeassistant: |
+        [homeassistant]
+        path=/shares/homeassistant
+        valid users = homeassistant, dan
+        guest ok = no
+        read only = no
+        browseable = yes
+
+    volumes:
+      - "/media/backup/homeassistant:/shares/homeassistant"
+      - "/home/dan:/shares/dan"
